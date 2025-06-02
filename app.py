@@ -57,3 +57,12 @@ def submit():
 
 if __name__ == '__main__':
     app.run(debug=True)
+import os
+
+# यह सुनिश्चित करता है कि 'data' नाम का फोल्डर बना रहे
+os.makedirs("data", exist_ok=True)
+
+LOG_FILE = "data/logs.csv"
+
+with open(LOG_FILE, 'w', newline='') as file:
+    ...
