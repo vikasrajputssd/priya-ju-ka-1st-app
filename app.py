@@ -66,3 +66,35 @@ LOG_FILE = "data/logs.csv"
 
 with open(LOG_FILE, 'w', newline='') as file:
     ...
+import streamlit as st
+from datetime import datetime
+import os
+import csv
+
+st.title("🌸 लाड़ली जू की सेवा में पहला App 🌸")
+
+LOG_FILE = 'log.csv'
+
+# 🔧 Check और बनाओ log.csv फाइल अगर न हो
+if not os.path.exists(LOG_FILE):
+    with open(LOG_FILE, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Timestamp', 'Message'])  # Header row
+
+# 📝 User input
+message = st.text_input("लाड़ली जू को संदेश लिखिए:")
+
+# 🧾 Submit button
+if st.button("संदेश भेजें"):
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    with open(LOG_FILE, 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([timestamp, message])
+    st.success("🌺 आपका संदेश लाड़ली जू तक पहुँच गया।")
+
+# 📜 Show log file data
+if st.checkbox("सभी संदेश दिखाएँ"):
+    with open(LOG_FILE, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            st.write(" | ".join(row))
