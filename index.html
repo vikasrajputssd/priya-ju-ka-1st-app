@@ -1,69 +1,222 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>नाम-जप स्मृति ट्रैकर</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <h1>लाड़ली जू के नाम-जप भूल ट्रैकर</h1>
-    <form method="POST">
-        <label>📍 मन कहाँ था?</label><br>
-        <input type="text" name="place" required><br><br>
-
-        <label>🌀 उस समय मनोभाव?</label><br>
-        <input type="text" name="emotion" required><br><br>
-
-        <label>💭 नाम से बड़ा क्या लगा?</label><br>
-        <input type="text" name="distraction" required><br><br>
-
-        <button type="submit">🙏 क्षमा याचना दर्ज करें</button>
-    </form>
-
-    <hr>
-    <p>📿 “राधावल्लभ श्री हरिवंश” जप स्मरण करें।</p>
-</body>
-</html>
-<head>
-  <link rel="manifest" href="/static/manifest.json">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/static/service-worker.js')
-        .then(() => console.log('Service Worker Registered'));
-    }
-  </script>
-</head>
-<!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <title>लाड़ली नाम जप स्मृति</title>
-  <link rel="manifest" href="/static/manifest.json">
-  <link rel="stylesheet" href="/static/style.css">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/static/service-worker.js');
-    }
-  </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AgriBlackBox - आपकी खेती का साथी</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&display=swap" rel="stylesheet" />
+
+    <style>
+        body {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            background: linear-gradient(135deg, #7be495, #30b3ff);
+            margin: 0; padding: 0;
+            color: #333;
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            padding: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #05668d;
+            letter-spacing: 2px;
+        }
+        main {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            margin: 30px auto 50px auto;
+            padding: 30px;
+        }
+        h2 {
+            text-align: center;
+            color: #05668d;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-weight: 600;
+            color: #023e8a;
+        }
+        input[type="file"], textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #90e0ef;
+            font-size: 1rem;
+            resize: vertical;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input[type="file"]:focus, textarea:focus, input[type="text"]:focus {
+            border-color: #0077b6;
+            outline: none;
+        }
+        button {
+            background: #023e8a;
+            color: white;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(2, 62, 138, 0.4);
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background: #03045e;
+        }
+        .result, .error, .audio-player {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #05668d;
+        }
+        .error {
+            color: #d90429;
+            font-weight: 700;
+        }
+        audio {
+            margin-top: 15px;
+            width: 100%;
+            outline: none;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
-  <h1>📿 नाम जप भूल स्मरण</h1>
-  <form method="post" action="/submit">
-    <label>📍 कहाँ थे?</label><br>
-    <input name="location" required><br>
 
-    <label>💭 उस समय क्या सोच रहे थे?</label><br>
-    <input name="thoughts" required><br>
+<header>AgriBlackBox - आपकी खेती का प्यारा साथी 🌾</header>
 
-    <label>🔁 नाम से ज़्यादा क्या प्रिय लगा?</label><br>
-    <input name="distraction" required><br>
+<main>
+    <h2>फसल की बीमारी जाँचें</h2>
+    <form id="imageForm">
+        <label for="fileInput">फसल की तस्वीर चुनें (Image चुनें)</label>
+        <input type="file" id="fileInput" accept="image/*" required />
+        <button type="submit">जाँच करें</button>
+    </form>
+    <div class="result" id="imageResult"></div>
 
-    <label>😔 कौन सी भावना हावी थी?</label><br>
-    <input name="emotion" required><br>
+    <hr style="margin: 40px 0;" />
 
-    <label>🙏 अब क्या समझ आया?</label><br>
-    <textarea name="realization" required></textarea><br>
+    <h2>पाठ को आवाज़ में बदलें</h2>
+    <form id="speakForm">
+        <label for="textInput">अपना संदेश लिखें</label>
+        <textarea id="textInput" rows="3" placeholder="यहां हिंदी में लिखें..." required></textarea>
+        <button type="submit">बोलें</button>
+    </form>
+    <div class="audio-player" id="audioPlayer"></div>
 
-    <button type="submit">लाड़ली जू के चरणों में समर्पण</button>
-  </form>
+    <hr style="margin: 40px 0;" />
+
+    <h2>ChatGPT से हिंदी में बात करें</h2>
+    <form id="chatForm">
+        <label for="chatInput">अपना सवाल पूछें</label>
+        <input type="text" id="chatInput" placeholder="अपना सवाल यहां लिखें..." required />
+        <button type="submit">सवाल भेजें</button>
+    </form>
+    <div class="result" id="chatResult"></div>
+</main>
+
+<script>
+    // फसल की इमेज अपलोड API
+    const imageForm = document.getElementById('imageForm');
+    const imageResult = document.getElementById('imageResult');
+    imageForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        imageResult.textContent = "जाँच हो रही है, कृपया प्रतीक्षा करें...";
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await fetch('/upload-image/', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            if (data.result) {
+                imageResult.textContent = data.result;
+            } else {
+                imageResult.textContent = "कुछ गलती हुई, कृपया फिर से प्रयास करें।";
+            }
+        } catch (error) {
+            imageResult.textContent = "सर्वर से कनेक्शन नहीं हो पाया।";
+        }
+    });
+
+    // टेक्स्ट से आवाज़ API
+    const speakForm = document.getElementById('speakForm');
+    const audioPlayerDiv = document.getElementById('audioPlayer');
+    speakForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        audioPlayerDiv.innerHTML = "तैयार हो रहा है...";
+        const textInput = document.getElementById('textInput').value;
+
+        const formData = new FormData();
+        formData.append('text', textInput);
+
+        try {
+            const response = await fetch('/speak/', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            if (data.audio_path) {
+                audioPlayerDiv.innerHTML = `<audio controls src="${data.audio_path}"></audio>`;
+            } else {
+                audioPlayerDiv.textContent = "आवाज़ बनाने में समस्या आई।";
+            }
+        } catch (error) {
+            audioPlayerDiv.textContent = "सर्वर से कनेक्शन नहीं हो पाया।";
+        }
+    });
+
+    // ChatGPT से बातचीत API
+    const chatForm = document.getElementById('chatForm');
+    const chatResult = document.getElementById('chatResult');
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        chatResult.textContent = "उत्तर आ रहा है...";
+        const chatInput = document.getElementById('chatInput').value;
+
+        try {
+            const response = await fetch('/chatgpt/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: chatInput })
+            });
+            const data = await response.json();
+            if (data.reply) {
+                chatResult.textContent = data.reply;
+            } else if (data.error) {
+                chatResult.textContent = "त्रुटि: " + data.error;
+            } else {
+                chatResult.textContent = "कोई उत्तर प्राप्त नहीं हुआ।";
+            }
+        } catch (error) {
+            chatResult.textContent = "सर्वर से कनेक्शन नहीं हो पाया।";
+        }
+    });
+</script>
+
 </body>
 </html>

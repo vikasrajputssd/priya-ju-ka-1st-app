@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#0e0e11;color:white;font-family:sans-serif">
+
+<h3>CODE 1 — Different Actions</h3>
+<div id="box"></div>
+<p id="res"></p>
+
+<script>
+
+const actions=["alert","color","time"];
+
+for(let i=1;i<=30;i++){
+ let act=actions[i%3];
+ box.innerHTML+=`<button data-action="${act}">${i}</button>`;
+}
+
+document.body.onclick=e=>{
+ if(!e.target.dataset.action) return;
+
+ let a=e.target.dataset.action;
+
+ if(a=="alert") alert("Hello 👋");
+
+ if(a=="color")
+ document.body.style.background=
+ "hsl("+Math.random()*360+"deg 30% 10%)";
+
+ if(a=="time")
+ res.innerText=new Date().toLocaleTimeString();
+};
+
+</script>
+</body>
+</html>
